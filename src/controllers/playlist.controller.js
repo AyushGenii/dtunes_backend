@@ -1,6 +1,6 @@
 import Playlist from '../models/playlist.model.js';
 
-export const createPlaylist = async (req, res) => {
+const createPlaylist = async (req, res) => {
   try {
     const { name, thumbnail } = req.body;
     const owner = req.user._id;
@@ -12,7 +12,7 @@ export const createPlaylist = async (req, res) => {
   }
 };
 
-export const getMyPlaylists = async (req, res) => {
+const getMyPlaylists = async (req, res) => {
   try {
     const playlists = await Playlist.find({ owner: req.user._id }).populate('songs');
     res.json(playlists);
@@ -21,7 +21,7 @@ export const getMyPlaylists = async (req, res) => {
   }
 };
 
-export const addSongToPlaylist = async (req, res) => {
+const addSongToPlaylist = async (req, res) => {
   const { songId } = req.body;
   const playlistId = req.params.id;
 
@@ -43,7 +43,7 @@ export const addSongToPlaylist = async (req, res) => {
   }
 };
 
-export const removeSongFromPlaylist = async (req, res) => {
+const removeSongFromPlaylist = async (req, res) => {
   const { songId } = req.body;
   const playlistId = req.params.id;
 
@@ -63,7 +63,7 @@ export const removeSongFromPlaylist = async (req, res) => {
   }
 };
 
-export const deletePlaylist = async (req, res) => {
+const deletePlaylist = async (req, res) => {
   try {
     const playlist = await Playlist.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
 
@@ -76,3 +76,11 @@ export const deletePlaylist = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export {
+  createPlaylist,
+  getMyPlaylists,
+  addSongToPlaylist,
+  removeSongFromPlaylist,
+  deletePlaylist  
+}

@@ -2,41 +2,48 @@ import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
+    password: {
+      type: String,
+    },
+    refreshToken: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: ["user", "artist"],
+      default: "user",
+    },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    friendRequestsSent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    friendRequestsReceived: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ],
+    avatar: String,
+    bio: String,
+    dob: String,
+    language: String,
   },
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-    index: true,
-  },
-  password: {
-    type: String,
-  },
-  refreshToken: {
-    type: String,
-  },
-  role:{
-    type:String,
-    enum:['user','artist'],
-    default:'user'
-  },
-   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  friendRequestsSent: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  friendRequestsReceived: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  avatar: String,
-  bio: String,
-  dob: String,
-  language: String,
-});
+  {
+    timestamps: true,
+  }
+);
 //middleware
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {

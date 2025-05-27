@@ -3,6 +3,7 @@ import { ApiError, ApiResponse,asyncHandler } from "../lib/utils.js";
 
 
 // Upload a new song by artist
+// TODO: Add cloudinary
 const uploadSong = asyncHandler(async (req, res) => {
   const { title, audioUrl, thumbnailUrl } = req.body;
   const artistId = req.user._id;
